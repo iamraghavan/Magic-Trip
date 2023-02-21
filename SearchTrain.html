@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Train Information</title>
+
+</head>
+<body>
+  <h1>Search Train Information</h1>
+  <div>
+    <label for="trainNumber">Enter train number:</label>
+    <input type="text" id="trainNumber">
+    <button id="searchBtn">Search</button>
+  </div>
+  <div id="trainInfo"></div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    
+
+    let searchTrain = ((trainNo)=>{
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": `https://irctc1.p.rapidapi.com/api/v1/searchTrain?query=${trainNo}`,
+            "method": "GET",
+            "headers": {
+                "X-RapidAPI-Key": "40ba406757msh429d964d39d704ap10af34jsn1f4fd798c6d8",
+                "X-RapidAPI-Host": "irctc1.p.rapidapi.com"
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response);
+        });
+    })
+
+
+
+    // Attach a click event listener to the search button
+    $("#searchBtn").click(function() {
+      // Get the train number from the input field
+      var trainNumber = $("#trainNumber").val();
+      
+      // Call the searchTrain function to search for train information
+      searchTrain(trainNumber);
+    });
+  </script>
+</body>
+</html>

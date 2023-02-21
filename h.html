@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #stationsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#stationsList li {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+  </style>
+</head>
+<body>
+  <input type="text" id="searchBox" placeholder="Enter a location">
+<button id="searchBtn">Search</button>
+<ul id="stationsList"></ul>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  // Function to search for railway stations using OpenStreetMap Nominatim API
+function searchStations(location) {
+  // Build the URL to query OpenStreetMap Nominatim API
+  var apiUrl = "https://nominatim.openstreetmap.org/search?q=railway+station+in+" + location + ",+India&format=jsonv2";
+
+  // Make an AJAX call to query the OpenStreetMap Nominatim API
+  $.ajax({
+    url: apiUrl,
+    method: "GET",
+    dataType: "json",
+    success: function(response) {
+      // Clear the existing stations list
+      $("#stationsList").empty();
+      
+      // Loop through the response data and add the railway stations to the list
+      $.each(response, function(index, item) {
+        // Check if the location is a railway station
+        if (item.category == "railway" && item.type == "station") {
+          // Create a new <li> element for the railway station and add it to the list
+          var li = $("<li>").text(item.display_name);
+          $("#stationsList").append(li);
+        }
+      });
+    },
+    error: function(error) {
+      console.log(error);
+    }
+  });
+}
+
+// Attach a click event listener to the search button
+$("#searchBtn").click(function() {
+  // Get the search location from the search box
+  var searchLocation = $("#searchBox").val();
+  
+  // Call the searchStations function to search for railway stations in the location
+  searchStations(searchLocation);
+});
+
+</script>
+</body>
+</html>
